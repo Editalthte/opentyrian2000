@@ -145,7 +145,7 @@ bool gameplaySelect(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -160,7 +160,7 @@ bool gameplaySelect(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 
@@ -342,7 +342,7 @@ bool episodeSelect(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -357,7 +357,7 @@ bool episodeSelect(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 
@@ -573,7 +573,7 @@ bool difficultySelect(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -588,7 +588,7 @@ bool difficultySelect(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 
@@ -773,7 +773,7 @@ bool timedBattleSelect(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -788,7 +788,7 @@ bool timedBattleSelect(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 

@@ -75,7 +75,7 @@ bool pause_pressed = false, ingamemenu_pressed = false;
 void JE_drawTextWindow(const char *text)
 {
 	if (textErase > 0) // erase current text
-		blit_sprite(VGAScreenSeg, 16, 189, OPTION_SHAPES, 36);  // in-game text area
+	{ blit_sprite(VGAScreenSeg, 16, 189, OPTION_SHAPES, 36); }  // in-game text area
 
 	textErase = 100;
 	JE_outText(VGAScreenSeg, 20, 190, text, 0, 4);
@@ -191,7 +191,7 @@ static bool helpSystemPage(Uint8 *topic, bool *restart);
 void JE_helpSystem(JE_byte startTopic)
 {
 	if (shopSpriteSheet.data == NULL)
-		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+	{ JE_loadCompShapes(&shopSpriteSheet, '1'); }  // need mouse pointer sprites
 
 	Uint8 topic = startTopic;
 
@@ -205,6 +205,7 @@ void JE_helpSystem(JE_byte startTopic)
 	const int yMenuItems = 60;
 	const int dyMenuItems = 20;
 	const int hMenuItem = 13;
+
 	int wMenuItem[COUNTOF(topicName) - 1] = { 0 };
 
 	for (; ; )
@@ -219,10 +220,11 @@ void JE_helpSystem(JE_byte startTopic)
 		if (topic > 1)
 		{
 			if (!helpSystemPage(&topic, &restart))
-				return;
+			{ return; }
 
 			selectedIndex = (size_t)topic - 1;
 			topic = 1;
+
 			continue;
 		}
 
@@ -271,8 +273,9 @@ void JE_helpSystem(JE_byte startTopic)
 			push_joysticks_as_keyboard();
 			service_SDL_events(false);
 
-			mouseMoved = mouse_x != oldMouseX || mouse_y != oldMouseY;
-		} while (!(newkey || newmouse || mouseMoved));
+			mouseMoved = (mouse_x != oldMouseX) || (mouse_y != oldMouseY);
+		}
+		while ( !(newkey || newmouse || mouseMoved) );
 
 		// Handle interaction.
 
@@ -297,7 +300,7 @@ void JE_helpSystem(JE_byte startTopic)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -312,7 +315,7 @@ void JE_helpSystem(JE_byte startTopic)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 
@@ -513,58 +516,74 @@ static bool helpSystemPage(Uint8 *topic, bool *restart)
 
 		if (newmouse)
 		{
-			switch (lastmouse_but)
+			switch (most_recent_mouse_button)
 			{
-			case SDL_BUTTON_LEFT:
-			{
-				JE_playSampleNum(S_CURSOR);
+				case SDL_BUTTON_LEFT:
+				{
+					JE_playSampleNum(S_CURSOR);
 
-				if (mouse_x < xCenter)
-					page -= 1;
-				else
-					page += 1;
-				break;
-			}
-			case SDL_BUTTON_RIGHT:
-			{
-				JE_playSampleNum(S_SPRING);
+					if (mouse_x < xCenter)
+					{ page -= 1; }
+						
+					else
+					{ page += 1; }
 
-				done = true;
-				break;
-			}
-			default:
-				break;
+
+					break;
+				}
+
+				case SDL_BUTTON_RIGHT:
+				{
+					JE_playSampleNum(S_SPRING);
+
+					done = true;
+
+					break;
+				}
+
+				default:
+				{ break; }
 			}
 		}
+
 		else if (newkey)
 		{
 			switch (lastkey_scan)
 			{
-			case SDL_SCANCODE_LEFT:
-			{
-				JE_playSampleNum(S_CURSOR);
+				case SDL_SCANCODE_LEFT:
+				{
+					JE_playSampleNum(S_CURSOR);
 
-				page -= 1;
-				break;
-			}
-			case SDL_SCANCODE_RIGHT:
-			case SDL_SCANCODE_SPACE:
-			case SDL_SCANCODE_RETURN:
-			{
-				JE_playSampleNum(S_CURSOR);
+					page -= 1;
 
-				page += 1;
-				break;
-			}
-			case SDL_SCANCODE_ESCAPE:
-			{
-				JE_playSampleNum(S_SPRING);
 
-				done = true;
-				break;
-			}
-			default:
-				break;
+					break;
+				}
+
+				case SDL_SCANCODE_RIGHT:
+				case SDL_SCANCODE_SPACE:
+				case SDL_SCANCODE_RETURN:
+				{
+					JE_playSampleNum(S_CURSOR);
+
+					page += 1;
+
+
+					break;
+				}
+
+				case SDL_SCANCODE_ESCAPE:
+				{
+					JE_playSampleNum(S_SPRING);
+
+					done = true;
+
+
+					break;
+				}
+
+				default:
+				{ break; }
 			}
 		}
 
@@ -586,7 +605,7 @@ long weapon_upgrade_cost(long base_cost, unsigned int power)
 
 	// 0 1 3 6 10 15 21 29 ...
 	for (; power > 0; power--)
-		temp += power;
+	{ temp += power; }
 
 	return base_cost * temp;
 }
@@ -761,7 +780,7 @@ bool JE_loadScreen(void)
 			    mouse_x >= xLeftControl &&
 			    mouse_x < xLeftControl + wControl)
 			{
-				if (newmouse && lastmouse_but == SDL_BUTTON_LEFT)
+				if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT)
 				{
 					JE_playSampleNum(S_CURSOR);
 
@@ -773,7 +792,7 @@ bool JE_loadScreen(void)
 			         mouse_x >= xRightControl &&
 			         mouse_x < xRightControl + wControl)
 			{
-				if (newmouse && lastmouse_but == SDL_BUTTON_LEFT)
+				if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT)
 				{
 					JE_playSampleNum(S_CURSOR);
 
@@ -797,7 +816,7 @@ bool JE_loadScreen(void)
 								selectedIndex = i;
 							}
 
-							if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+							if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 							    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem &&
 							    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 							{
@@ -813,7 +832,7 @@ bool JE_loadScreen(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 
@@ -1259,7 +1278,7 @@ void JE_highScoreScreen(void)
 
 		if (newmouse)
 		{
-			switch (lastmouse_but)
+			switch (most_recent_mouse_button)
 			{
 			case SDL_BUTTON_LEFT:
 			{
@@ -1658,7 +1677,7 @@ JE_boolean JE_inGameSetup(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -1717,7 +1736,7 @@ JE_boolean JE_inGameSetup(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 

@@ -2083,7 +2083,7 @@ draw_player_shot_loop_end:
 
 	/*-------      DEbug      ---------*/
 	debugTime = SDL_GetTicks();
-	tempW = lastmouse_but;
+	tempW = most_recent_mouse_button;
 
 	if (debug)
 	{
@@ -3429,7 +3429,7 @@ bool titleScreen(void)
 							selectedIndex = i;
 						}
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xMenuItem && lastmouse_x < xMenuItem + wMenuItem[i] &&
 						    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
 						{
@@ -3444,7 +3444,7 @@ bool titleScreen(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				JE_playSampleNum(S_SPRING);
 

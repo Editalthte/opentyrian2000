@@ -220,7 +220,7 @@ bool load_opentyrian_config(void)
 	
 	FILE *file = dir_fopen_warn(get_user_directory(), "opentyrian.cfg", "r");
 	if (file == NULL)
-		return false;
+	{ return false; }
 
 	if (!config_parse(config, file))
 	{

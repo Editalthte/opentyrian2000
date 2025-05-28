@@ -118,7 +118,7 @@ void JE_mouseStart(void)
 	{
 		service_SDL_events(false);
 
-		mouseButton = mousedown ? lastmouse_but : 0; /* incorrect, possibly unimportant */
+		mouseButton = mousedown ? most_recent_mouse_button : 0; /* incorrect, possibly unimportant */
 
 		const MousePointerSpriteInfo *spriteInfo = &mousePointerSprites[mouseCursor];
 
@@ -140,7 +140,7 @@ void JE_mouseStartFilter(Uint8 filter)
 {
 	if (has_mouse)
 	{
-		mouseButton = mousedown ? lastmouse_but : 0; /* incorrect, possibly unimportant */
+		mouseButton = mousedown ? most_recent_mouse_button : 0; /* incorrect, possibly unimportant */
 
 		const MousePointerSpriteInfo *spriteInfo = &mousePointerSprites[mouseCursor];
 

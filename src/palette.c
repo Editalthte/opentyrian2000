@@ -37,7 +37,7 @@ Uint32 rgb_palette[256], yuv_palette[256];
 
 Palette colors;
 
-void JE_loadPals(void)
+void JE_loadPalettes(void)
 {
 	FILE *f = dir_fopen_die(data_dir(), "palette.dat", "rb");
 	

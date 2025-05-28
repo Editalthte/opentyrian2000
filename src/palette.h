@@ -32,7 +32,7 @@ extern Uint32 rgb_palette[256], yuv_palette[256];
 
 extern Palette colors; // TODO: get rid of this
 
-void JE_loadPals(void);
+void JE_loadPalettes(void);
 
 void set_palette(Palette colors, unsigned int first_color, unsigned int last_color);
 void set_colors(SDL_Color color, unsigned int first_color, unsigned int last_color);

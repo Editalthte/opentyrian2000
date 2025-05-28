@@ -852,7 +852,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "warning: Christmas is missing.\n");
 	}
 
-	JE_loadPals();
+	JE_loadPalettes();
 	JE_loadMainShapeTables(xmas ? "tyrianc.shp" : "tyrian.shp");
 
 	if (

@@ -177,7 +177,7 @@ bool xmas_prompt(void)
 					{
 						selectedIndex = i;
 
-						if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+						if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 						    lastmouse_x >= xChoice && lastmouse_x < xChoice + wChoice &&
 						    lastmouse_y >= yChoice && lastmouse_y < yChoice + hChoice)
 						{
@@ -192,7 +192,7 @@ bool xmas_prompt(void)
 
 		if (newmouse)
 		{
-			if (lastmouse_but == SDL_BUTTON_RIGHT)
+			if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 			{
 				cancel = true;
 			}
