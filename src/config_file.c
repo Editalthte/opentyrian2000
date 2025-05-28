@@ -777,8 +777,10 @@ bool config_parse(Config *config, FILE *file)
 	
 	size_t buffer_cap = 128;
 	char *buffer = malloc(buffer_cap * sizeof(char));
+	
 	if (buffer == NULL)
-		config_oom();
+	{ config_oom(); }
+
 	size_t buffer_end = 1;
 	buffer[buffer_end - 1] = '\0';
 	
@@ -799,6 +801,7 @@ bool config_parse(Config *config, FILE *file)
 					next_line -= line;
 					line = 0;
 				}
+
 				else if (buffer_end > 1)
 				{
 					/* need larger capacity */
@@ -810,8 +813,9 @@ bool config_parse(Config *config, FILE *file)
 				}
 				
 				size_t read = fread(&buffer[buffer_end - 1], sizeof(char), buffer_cap - buffer_end, file);
+				
 				if (read == 0)
-					break;
+				{ break; }
 				
 				buffer_end += read;
 				buffer[buffer_end - 1] = '\0';
@@ -827,7 +831,7 @@ bool config_parse(Config *config, FILE *file)
 		
 		/* if at end of file */
 		if (next_line == line)
-			break;
+		{ break; }
 		
 		size_t i = line;
 		
@@ -835,67 +839,86 @@ bool config_parse(Config *config, FILE *file)
 		
 		switch (directive)
 		{
-		case INVALID_DIRECTIVE:
-			continue;
-		case SECTION_DIRECTIVE:
+			case INVALID_DIRECTIVE:
+			{ continue; }
+
+			case SECTION_DIRECTIVE:
 			{
 				size_t type_start;
 				size_t type_length;
 				
 				if (!parse_field(buffer, &i, &type_start, &type_length))
-					continue;
+				{ continue; }
 				
 				size_t name_start;
 				size_t name_length;
 				
 				bool has_name = parse_field(buffer, &i, &name_start, &name_length);
 				
-				section = config_add_section_len(config,
+				section =
+					config_add_section_len(
+						config,
 						&buffer[type_start], type_length,
-						has_name ? &buffer[name_start] : NULL, has_name ? name_length : 0);
+						has_name ? &buffer[name_start] : NULL, has_name ? name_length : 0
+					);
+				
 				if (section == NULL)
-					config_oom();
+				{ config_oom(); }
+				
 				option = NULL;
 			}
+			
 			break;
-		case ITEM_DIRECTIVE:
-		case LIST_DIRECTIVE:
+
+			case ITEM_DIRECTIVE:
+			case LIST_DIRECTIVE:
 			{
 				if (section == NULL)
-					continue;
+				{ continue; }
 				
 				size_t key_start;
 				size_t key_length;
 				
 				if (!parse_field(buffer, &i, &key_start, &key_length))
-					continue;
+				{ continue; }
 				
 				size_t value_start;
 				size_t value_length;
 				
 				if (!parse_field(buffer, &i, &value_start, &value_length))
-					continue;
+				{ continue; }
 				
+
 				if (directive == ITEM_DIRECTIVE)
 				{
 					option = config_set_option_len(section,
 							&buffer[key_start], key_length,
 							&buffer[value_start], value_length);
 				}
+				
 				else
 				{
 					if (option == NULL || !string_equal_len(&option->key, &buffer[key_start], key_length))
+					{
 						option = config_get_or_set_option_len(section,
 								&buffer[key_start], key_length,
 								NULL, 0);
+					}
+
 					if (option != NULL)
+					{
 						option = config_add_value_len(option,
 								&buffer[value_start], value_length);
+					}
+
 				}
+
+				
 				if (option == NULL)
-					config_oom();
+				{ config_oom(); }
 			}
-			break;
+
+				break;
 		}
 		
 		assert(i <= next_line);
