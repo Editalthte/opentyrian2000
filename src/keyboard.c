@@ -35,7 +35,7 @@ JE_boolean ESCPressed;
 JE_boolean newkey, newmouse, keydown, mousedown;
 SDL_Scancode lastkey_scan;
 SDL_Keymod lastkey_mod;
-Uint8 lastmouse_but;
+Uint8 most_recent_mouse_button;
 Sint32 lastmouse_x, lastmouse_y;
 JE_boolean mouse_pressed[4] = {false, false, false, false};
 Sint32 mouse_x, mouse_y;
@@ -71,7 +71,8 @@ void wait_input(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 
 #ifdef WITH_NETWORK
 		if (isNetworkGame)
-			network_check();
+		{ network_check(); }
+			
 #endif
 	}
 }
@@ -87,7 +88,8 @@ void wait_noinput(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 
 #ifdef WITH_NETWORK
 		if (isNetworkGame)
-			network_check();
+		{ network_check(); }
+			
 #endif
 	}
 }
@@ -121,7 +123,7 @@ JE_word JE_mousePosition(JE_word *mouseX, JE_word *mouseY)
 	service_SDL_events(false);
 	*mouseX = mouse_x;
 	*mouseY = mouse_y;
-	return mousedown ? lastmouse_but : 0;
+	return mousedown ? most_recent_mouse_button : 0;
 }
 
 void mouseGetRelativePosition(Sint32 *const out_x, Sint32 *const out_y)
@@ -223,7 +225,7 @@ void service_SDL_events(JE_boolean clear_new)
 				if (ev.type == SDL_MOUSEBUTTONDOWN)
 				{
 					newmouse = true;
-					lastmouse_but = ev.button.button;
+					most_recent_mouse_button = ev.button.button;
 					lastmouse_x = ev.button.x;
 					lastmouse_y = ev.button.y;
 					mousedown = true;

@@ -60,23 +60,23 @@ const char *opentyrian_str = "OpenTyrian2000";
 const char *opentyrian_version = OPENTYRIAN_VERSION;
 
 static size_t getDisplayPickerItemsCount(void)
-{
-	return 1 + (size_t)SDL_GetNumVideoDisplays();
-}
+{ return 1 + (size_t)SDL_GetNumVideoDisplays(); }
+
 
 static const char *getDisplayPickerItem(size_t i, char *buffer, size_t bufferSize)
 {
 	if (i == 0)
-		return "Window";
-
+	{ return "Window"; }
+		
 	snprintf(buffer, bufferSize, "Display %d", (int)i);
+	
 	return buffer;
 }
 
+
 static size_t getScalerPickerItemsCount(void)
-{
-	return (size_t)scalers_count;
-}
+{ return (size_t)scalers_count; }
+
 
 static const char *getScalerPickerItem(size_t i, char *buffer, size_t bufferSize)
 {
@@ -85,10 +85,10 @@ static const char *getScalerPickerItem(size_t i, char *buffer, size_t bufferSize
 	return scalers[i].name;
 }
 
+
 static size_t getScalingModePickerItemsCount(void)
-{
-	return (size_t)ScalingMode_MAX;
-}
+{ return (size_t)ScalingMode_MAX; }
+
 
 static const char *getScalingModePickerItem(size_t i, char *buffer, size_t bufferSize)
 {
@@ -96,6 +96,7 @@ static const char *getScalingModePickerItem(size_t i, char *buffer, size_t buffe
 
 	return scaling_mode_names[i];
 }
+
 
 void setupMenu(void)
 {
@@ -137,10 +138,14 @@ void setupMenu(void)
 		const MenuItem items[6];
 	} Menu;
 
-	static const Menu menus[] = {
-		[MENU_SETUP] = {
+
+	static const Menu menus[] =
+	{
+		[MENU_SETUP] =
+		{
 			.header = "Setup",
-			.items = {
+			.items =
+			{
 				{ MENU_ITEM_GRAPHICS, "Graphics...", "Change the graphics settings." },
 				{ MENU_ITEM_SOUND, "Sound...", "Change the sound settings." },
 				{ MENU_ITEM_JUKEBOX, "Jukebox", "Listen to the music of Tyrian." },
@@ -149,9 +154,12 @@ void setupMenu(void)
 				{ -1 }
 			},
 		},
-		[MENU_GRAPHICS] = {
+
+		[MENU_GRAPHICS] =
+		{
 			.header = "Graphics",
-			.items = {
+			.items =
+			{
 				{ MENU_ITEM_DISPLAY, "Display:", "Change the display mode.", getDisplayPickerItemsCount, getDisplayPickerItem },
 				{ MENU_ITEM_SCALER, "Scaler:", "Change the pixel art scaling algorithm.", getScalerPickerItemsCount, getScalerPickerItem },
 				{ MENU_ITEM_SCALING_MODE, "Scaling Mode:", "Change the scaling mode.", getScalingModePickerItemsCount, getScalingModePickerItem },
@@ -159,9 +167,12 @@ void setupMenu(void)
 				{ -1 }
 			},
 		},
-		[MENU_SOUND] = {
+
+		[MENU_SOUND] =
+		{
 			.header = "Sound",
-			.items = {
+			.items =
+			{
 				{ MENU_ITEM_MUSIC_VOLUME, "Music Volume", "Change volume with the left/right arrow keys." },
 				{ MENU_ITEM_SOUND_VOLUME, "Sound Volume", "Change volume with the left/right arrow keys." },
 				{ MENU_ITEM_DONE, "Done", "Return to the previous menu." },
@@ -173,7 +184,7 @@ void setupMenu(void)
 	char buffer[100];
 
 	if (shopSpriteSheet.data == NULL)
-		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+	{ JE_loadCompShapes(&shopSpriteSheet, '1'); } // need mouse pointer sprites 
 
 	bool restart = true;
 
@@ -220,7 +231,6 @@ void setupMenu(void)
 		const MenuItem *const menuItems = menu->items;
 
 		// Draw menu items.
-
 		size_t menuItemsCount = 0;
 		for (size_t i = 0; menuItems[i].id != (MenuItemId)-1; ++i)
 		{
@@ -234,7 +244,7 @@ void setupMenu(void)
 			const bool disabled = currentPicker != MENU_ITEM_NONE && !selected;
 
 			if (selected)
-				yPicker = y;
+			{ yPicker = y; }
 
 			const char *const name = menuItem->name;
 
@@ -242,45 +252,47 @@ void setupMenu(void)
 
 			switch (menuItem->id)
 			{
-			case MENU_ITEM_DISPLAY:;
-				const char *value = "Window";
-				if (fullscreen_display >= 0)
-				{
-					snprintf(buffer, sizeof(buffer), "Display %d", fullscreen_display + 1);
-					value = buffer;
-				}
+				case MENU_ITEM_DISPLAY:;
+					const char *value = "Window";
 
-				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, value, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
-				break;
+					if (fullscreen_display >= 0)
+					{
+						snprintf(buffer, sizeof(buffer), "Display %d", fullscreen_display + 1);
+						value = buffer;
+					}
 
-			case MENU_ITEM_SCALER:
-				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scalers[scaler].name, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
-				break;
+					draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, value, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
+					break;
 
-			case MENU_ITEM_SCALING_MODE:
-				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scaling_mode_names[scaling_mode], normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
-				break;
+				case MENU_ITEM_SCALER:
+					draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scalers[scaler].name, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
+					break;
 
-			case MENU_ITEM_MUSIC_VOLUME:
-				JE_barDrawShadow(VGAScreen, xMenuItemValue, y, 1, music_disabled ? 170 : 174, (tyrMusicVolume + 4) / 8, 2, 10);
-				JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
-				break;
+				case MENU_ITEM_SCALING_MODE:
+					draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scaling_mode_names[scaling_mode], normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
+					break;
 
-			case MENU_ITEM_SOUND_VOLUME:
-				JE_barDrawShadow(VGAScreen, xMenuItemValue, y, 1, samples_disabled ? 170 : 174, (fxVolume + 4) / 8, 2, 10);
-				JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
-				break;
+				case MENU_ITEM_MUSIC_VOLUME:
+					JE_barDrawShadow(VGAScreen, xMenuItemValue, y, 1, music_disabled ? 170 : 174, (tyrMusicVolume + 4) / 8, 2, 10);
+					JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
+					break;
 
-			default:
-				break;
+				case MENU_ITEM_SOUND_VOLUME:
+					JE_barDrawShadow(VGAScreen, xMenuItemValue, y, 1, samples_disabled ? 170 : 174, (fxVolume + 4) / 8, 2, 10);
+					JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
+					break;
+
+				default:
+					break;
 			}
 		}
+
 
 		// Draw status text.
 		JE_textShade(VGAScreen, xMenuItemName, 190, menuItems[*selectedMenuItemIndex].description, 15, 4, PART_SHADE);
 
-		// Draw picker box and items.
 
+		// Draw picker box and items.
 		if (currentPicker != MENU_ITEM_NONE)
 		{
 			const MenuItem *selectedMenuItem = &menuItems[*selectedMenuItemIndex];
@@ -306,6 +318,7 @@ void setupMenu(void)
 			}
 		}
 
+
 		if (restart)
 		{
 			mouseCursor = MOUSE_POINTER_NORMAL;
@@ -315,6 +328,7 @@ void setupMenu(void)
 			restart = false;
 		}
 
+
 		service_SDL_events(true);
 
 		JE_mouseStart();
@@ -323,6 +337,7 @@ void setupMenu(void)
 
 		bool mouseMoved = false;
 		int oldFullscreenDisplay = fullscreen_display;
+
 		do
 		{
 			SDL_Delay(16);
@@ -333,13 +348,19 @@ void setupMenu(void)
 			push_joysticks_as_keyboard();
 			service_SDL_events(false);
 
-			mouseMoved = mouse_x != oldMouseX || mouse_y != oldMouseY;
-		} while (!(newkey || newmouse || mouseMoved || fullscreen_display != oldFullscreenDisplay));
+			mouseMoved = (mouse_x != oldMouseX) || (mouse_y != oldMouseY);
+		}
+		while (
+				!(
+					newkey || newmouse || mouseMoved ||
+					(fullscreen_display != oldFullscreenDisplay)
+				)
+			);
+
 
 		if (currentPicker == MENU_ITEM_NONE)
 		{
 			// Handle menu item interaction.
-
 			bool action = false;
 
 			if (mouseMoved || newmouse)
@@ -359,49 +380,60 @@ void setupMenu(void)
 								*selectedMenuItemIndex = i;
 							}
 
-							if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
-							    lastmouse_y >= yMenuItem && lastmouse_y < yMenuItem + hMenuItem)
+							if (
+								newmouse &&
+								(most_recent_mouse_button == SDL_BUTTON_LEFT) &&
+								(lastmouse_y >= yMenuItem) &&
+								(lastmouse_y < (yMenuItem + hMenuItem))
+							)
 							{
 								// Act on menu item via name.
-								if (lastmouse_x >= xMenuItemName && lastmouse_x < xMenuItemName + wMenuItemName)
-								{
-									action = true;
-								}
+								if (
+									(lastmouse_x >= xMenuItemName) &&
+									(lastmouse_x < (xMenuItemName + wMenuItemName))
+								)
+								{ action = true; }
 
 								// Act on menu item via value.
-								else if (lastmouse_x >= xMenuItemValue && lastmouse_x < xMenuItemValue + wMenuItemValue)
+								else if (
+									(lastmouse_x >= xMenuItemValue) &&
+									(lastmouse_x < xMenuItemValue + wMenuItemValue)
+								)
 								{
 									switch (menuItems[*selectedMenuItemIndex].id)
 									{
-									case MENU_ITEM_DISPLAY:
-									case MENU_ITEM_SCALER:
-									case MENU_ITEM_SCALING_MODE:
-									{
-										action = true;
-										break;
-									}
-									case MENU_ITEM_MUSIC_VOLUME:
-									{
-										JE_playSampleNum(S_CURSOR);
+										case MENU_ITEM_DISPLAY:
+										case MENU_ITEM_SCALER:
+										case MENU_ITEM_SCALING_MODE:
+										{
+											action = true;
+											break;
+										}
 
-										int value = (lastmouse_x - xMenuItemValue) * 255 / (wMenuItemValue - 1);
-										tyrMusicVolume = MIN(MAX(0, value), 255);
+										case MENU_ITEM_MUSIC_VOLUME:
+										{
+											JE_playSampleNum(S_CURSOR);
 
-										set_volume(tyrMusicVolume, fxVolume);
-										break;
-									}
-									case MENU_ITEM_SOUND_VOLUME:
-									{
-										int value = (lastmouse_x - xMenuItemValue) * 255 / (wMenuItemValue - 1);
-										fxVolume = MIN(MAX(0, value), 255);
+											int value = ((lastmouse_x - xMenuItemValue) * 255) / (wMenuItemValue - 1);
+											tyrMusicVolume = MIN(MAX(0, value), 255);
 
-										set_volume(tyrMusicVolume, fxVolume);
+											set_volume(tyrMusicVolume, fxVolume);
+											break;
+										}
 
-										JE_playSampleNum(S_CURSOR);
-										break;
-									}
-									default:
-										break;
+										case MENU_ITEM_SOUND_VOLUME:
+										{
+											int value = ((lastmouse_x - xMenuItemValue) * 255) / (wMenuItemValue - 1);
+											fxVolume = MIN(MAX(0, value), 255);
+
+											set_volume(tyrMusicVolume, fxVolume);
+
+											JE_playSampleNum(S_CURSOR);
+											break;
+										}
+
+										default:
+											break;
 									}
 								}
 							}
@@ -414,96 +446,103 @@ void setupMenu(void)
 
 			if (newmouse)
 			{
-				if (lastmouse_but == SDL_BUTTON_RIGHT)
+				if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 				{
 					JE_playSampleNum(S_SPRING);
 
 					currentMenu = menuParents[currentMenu];
 				}
 			}
+
 			else if (newkey)
 			{
 				switch (lastkey_scan)
 				{
-				case SDL_SCANCODE_UP:
-				{
-					JE_playSampleNum(S_CURSOR);
-
-					*selectedMenuItemIndex = *selectedMenuItemIndex == 0
-						? menuItemsCount - 1
-						: *selectedMenuItemIndex - 1;
-					break;
-				}
-				case SDL_SCANCODE_DOWN:
-				{
-					JE_playSampleNum(S_CURSOR);
-
-					*selectedMenuItemIndex = *selectedMenuItemIndex == menuItemsCount - 1
-						? 0
-						: *selectedMenuItemIndex + 1;
-					break;
-				}
-				case SDL_SCANCODE_LEFT:
-				{
-					switch (menuItems[*selectedMenuItemIndex].id)
-					{
-					case MENU_ITEM_MUSIC_VOLUME:
+					case SDL_SCANCODE_UP:
 					{
 						JE_playSampleNum(S_CURSOR);
 
-						JE_changeVolume(&tyrMusicVolume, -8, &fxVolume, 0);
+						*selectedMenuItemIndex = *selectedMenuItemIndex == 0
+							? menuItemsCount - 1
+							: *selectedMenuItemIndex - 1;
 						break;
 					}
-					case MENU_ITEM_SOUND_VOLUME:
-					{
-						JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, -8);
 
+					case SDL_SCANCODE_DOWN:
+					{
 						JE_playSampleNum(S_CURSOR);
+
+						*selectedMenuItemIndex = *selectedMenuItemIndex == menuItemsCount - 1
+							? 0
+							: *selectedMenuItemIndex + 1;
 						break;
 					}
+
+					case SDL_SCANCODE_LEFT:
+					{
+						switch (menuItems[*selectedMenuItemIndex].id)
+						{
+						case MENU_ITEM_MUSIC_VOLUME:
+						{
+							JE_playSampleNum(S_CURSOR);
+
+							JE_changeVolume(&tyrMusicVolume, -8, &fxVolume, 0);
+							break;
+						}
+						case MENU_ITEM_SOUND_VOLUME:
+						{
+							JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, -8);
+
+							JE_playSampleNum(S_CURSOR);
+							break;
+						}
+						default:
+							break;
+						}
+						break;
+					}
+
+					case SDL_SCANCODE_RIGHT:
+					{
+						switch (menuItems[*selectedMenuItemIndex].id)
+						{
+						case MENU_ITEM_MUSIC_VOLUME:
+						{
+							JE_playSampleNum(S_CURSOR);
+
+							JE_changeVolume(&tyrMusicVolume, 8, &fxVolume, 0);
+							break;
+						}
+						case MENU_ITEM_SOUND_VOLUME:
+						{
+							JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, 8);
+
+							JE_playSampleNum(S_CURSOR);
+							break;
+						}
+						default:
+							break;
+						}
+						break;
+					}
+
+					case SDL_SCANCODE_SPACE:
+					case SDL_SCANCODE_RETURN:
+					{
+						action = true;
+						break;
+					}
+
+					case SDL_SCANCODE_ESCAPE:
+					{
+						JE_playSampleNum(S_SPRING);
+
+						currentMenu = menuParents[currentMenu];
+						break;
+					}
+					
 					default:
 						break;
-					}
-					break;
-				}
-				case SDL_SCANCODE_RIGHT:
-				{
-					switch (menuItems[*selectedMenuItemIndex].id)
-					{
-					case MENU_ITEM_MUSIC_VOLUME:
-					{
-						JE_playSampleNum(S_CURSOR);
-
-						JE_changeVolume(&tyrMusicVolume, 8, &fxVolume, 0);
-						break;
-					}
-					case MENU_ITEM_SOUND_VOLUME:
-					{
-						JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, 8);
-
-						JE_playSampleNum(S_CURSOR);
-						break;
-					}
-					default:
-						break;
-					}
-					break;
-				}
-				case SDL_SCANCODE_SPACE:
-				case SDL_SCANCODE_RETURN:
-				{
-					action = true;
-					break;
-				}
-				case SDL_SCANCODE_ESCAPE:
-				{
-					JE_playSampleNum(S_SPRING);
-
-					currentMenu = menuParents[currentMenu];
-					break;
-				}
-				default:
-					break;
 				}
 			}
 
@@ -641,7 +680,7 @@ void setupMenu(void)
 							}
 
 							// Act on picker item.
-							if (newmouse && lastmouse_but == SDL_BUTTON_LEFT &&
+							if (newmouse && most_recent_mouse_button == SDL_BUTTON_LEFT &&
 							    lastmouse_x >= xMenuItemValue && lastmouse_y < xMenuItemValue + wMenuItemName &&
 							    lastmouse_y >= yPickerItem && lastmouse_y < yPickerItem + hPickerItem)
 							{
@@ -654,7 +693,7 @@ void setupMenu(void)
 
 			if (newmouse)
 			{
-				if (lastmouse_but == SDL_BUTTON_RIGHT)
+				if (most_recent_mouse_button == SDL_BUTTON_RIGHT)
 				{
 					JE_playSampleNum(S_SPRING);
 
