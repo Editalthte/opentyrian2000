@@ -48,7 +48,7 @@
 #include "video_scale.h"
 #include "xmas.h"
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 #include <assert.h>
 #include <stdio.h>

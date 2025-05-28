@@ -28,7 +28,7 @@
 #include "sndmast.h"
 #include "vga256d.h"
 
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
 JE_word frameCountMax;
 

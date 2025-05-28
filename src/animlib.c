@@ -30,12 +30,12 @@
 #include <string.h>
 
 /*** Structs ***/
-/* The actual header has a lot of fields that are basically useless to us since
- * we both set our own framerate and the format itself only allows for
- * 320x200x8.  Should a (nonexistent) ani be played that doesn't have the same
- * assumed values we are going to use, TOO BAD.  It'll just be treated as
- * corrupt in playback.
- */
+	/* The actual header has a lot of fields that are basically useless to us since
+	* we both set our own framerate and the format itself only allows for
+	* 320x200x8.  Should a (nonexistent) ani be played that doesn't have the same
+	* assumed values we are going to use, TOO BAD.  It'll just be treated as
+	* corrupt in playback.
+	*/
 #define PALETTE_OFFSET    0x100 // 128 + sizeof(header)
 #define PAGEHEADER_OFFSET 0x500 // PALETTE_OFFSET + sizeof(palette)
 #define ANIM_OFFSET   0x0B00    // PAGEHEADER_OFFSET + sizeof(largepageheader) * 256
