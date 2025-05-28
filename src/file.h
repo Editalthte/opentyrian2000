@@ -48,21 +48,18 @@ static inline void fread_bool_die(bool *buffer, FILE *stream)
 
 // 8-bit fread
 static inline size_t fread_u8(Uint8 *buffer, size_t count, FILE *stream)
-{
-	return fread(buffer, sizeof(Uint8), count, stream);
-}
+{ return fread(buffer, sizeof(Uint8), count, stream); }
+
 
 // 8-bit fread that dies if read fails
 static inline void fread_u8_die(Uint8 *buffer, size_t count, FILE *stream)
-{
-	fread_die(buffer, sizeof(Uint8), count, stream);
-}
+{ fread_die(buffer, sizeof(Uint8), count, stream); }
+
 
 // 8-bit fread that dies if read fails
 static inline void fread_s8_die(Sint8 *buffer, size_t count, FILE *stream)
-{
-	fread_die(buffer, sizeof(Sint8), count, stream);
-}
+{ fread_die(buffer, sizeof(Sint8), count, stream); }
+
 
 // 16-bit endian-swapping fread that dies if read fails
 static inline void fread_u16_die(Uint16 *buffer, size_t count, FILE *stream)

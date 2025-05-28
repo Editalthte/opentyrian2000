@@ -540,7 +540,7 @@ void setupMenu(void)
 						currentMenu = menuParents[currentMenu];
 						break;
 					}
-					
+
 					default:
 						break;
 				}
@@ -552,95 +552,111 @@ void setupMenu(void)
 
 				switch (selectedMenuItemId)
 				{
-				case MENU_ITEM_DONE:
-				{
-					JE_playSampleNum(S_SELECT);
+					case MENU_ITEM_DONE:
+					{
+						JE_playSampleNum(S_SELECT);
 
-					currentMenu = menuParents[currentMenu];
-					break;
-				}
-				case MENU_ITEM_GRAPHICS:
-				{
-					JE_playSampleNum(S_SELECT);
+						currentMenu = menuParents[currentMenu];
 
-					menuParents[MENU_GRAPHICS] = currentMenu;
-					currentMenu = MENU_GRAPHICS;
-					selectedMenuItemIndexes[currentMenu] = 0;
-					break;
-				}
-				case MENU_ITEM_SOUND:
-				{
-					JE_playSampleNum(S_SELECT);
+						break;
+					}
 
-					menuParents[MENU_SOUND] = currentMenu;
-					currentMenu = MENU_SOUND;
-					selectedMenuItemIndexes[currentMenu] = 0;
-					break;
-				}
-				case MENU_ITEM_JUKEBOX:
-				{
-					JE_playSampleNum(S_SELECT);
+					case MENU_ITEM_GRAPHICS:
+					{
+						JE_playSampleNum(S_SELECT);
 
-					fade_black(10);
+						menuParents[MENU_GRAPHICS] = currentMenu;
+						currentMenu = MENU_GRAPHICS;
+						selectedMenuItemIndexes[currentMenu] = 0;
 
-					jukebox();
+						break;
+					}
 
-					restart = true;
-					break;
-				}
-				case MENU_ITEM_DESTRUCT:
-				{
-					JE_playSampleNum(S_SELECT);
+					case MENU_ITEM_SOUND:
+					{
+						JE_playSampleNum(S_SELECT);
 
-					fade_black(10);
+						menuParents[MENU_SOUND] = currentMenu;
+						currentMenu = MENU_SOUND;
+						selectedMenuItemIndexes[currentMenu] = 0;
 
-					JE_destructGame();
+						break;
+					}
 
-					restart = true;
-					break;
-				}
-				case MENU_ITEM_DISPLAY:
-				{
-					JE_playSampleNum(S_CLICK);
+					case MENU_ITEM_JUKEBOX:
+					{
+						JE_playSampleNum(S_SELECT);
 
-					currentPicker = selectedMenuItemId;
-					pickerSelectedIndex = (size_t)(fullscreen_display + 1);
-					break;
-				}
-				case MENU_ITEM_SCALER:
-				{
-					JE_playSampleNum(S_CLICK);
+						fade_black(10);
 
-					currentPicker = selectedMenuItemId;
-					pickerSelectedIndex = scaler;
-					break;
-				}
-				case MENU_ITEM_SCALING_MODE:
-				{
-					JE_playSampleNum(S_CLICK);
+						jukebox();
 
-					currentPicker = selectedMenuItemId;
-					pickerSelectedIndex = scaling_mode;
-					break;
-				}
-				case MENU_ITEM_MUSIC_VOLUME:
-				{
-					JE_playSampleNum(S_CLICK);
+						restart = true;
 
-					music_disabled = !music_disabled;
-					if (!music_disabled)
-						restart_song();
-					break;
-				}
-				case MENU_ITEM_SOUND_VOLUME:
-				{
-					samples_disabled = !samples_disabled;
+						break;
+					}
 
-					JE_playSampleNum(S_CLICK);
-					break;
-				}
-				default:
-					break;
+					case MENU_ITEM_DESTRUCT:
+					{
+						JE_playSampleNum(S_SELECT);
+
+						fade_black(10);
+
+						JE_destructGame();
+
+						restart = true;
+						break;
+					}
+
+					case MENU_ITEM_DISPLAY:
+					{
+						JE_playSampleNum(S_CLICK);
+
+						currentPicker = selectedMenuItemId;
+						pickerSelectedIndex = (size_t)(fullscreen_display + 1);
+						break;
+					}
+
+					case MENU_ITEM_SCALER:
+					{
+						JE_playSampleNum(S_CLICK);
+
+						currentPicker = selectedMenuItemId;
+						pickerSelectedIndex = scaler;
+						break;
+					}
+
+					case MENU_ITEM_SCALING_MODE:
+					{
+						JE_playSampleNum(S_CLICK);
+
+						currentPicker = selectedMenuItemId;
+						pickerSelectedIndex = scaling_mode;
+						break;
+					}
+
+					case MENU_ITEM_MUSIC_VOLUME:
+					{
+						JE_playSampleNum(S_CLICK);
+
+						music_disabled = !music_disabled;
+
+						if (!music_disabled)
+						{ restart_song(); }
+							
+						break;
+					}
+
+					case MENU_ITEM_SOUND_VOLUME:
+					{
+						samples_disabled = !samples_disabled;
+						JE_playSampleNum(S_CLICK);
+
+						break;
+					}
+
+					default:
+						break;
 				}
 			}
 
@@ -651,12 +667,12 @@ void setupMenu(void)
 				return;
 			}
 		}
+
 		else
 		{
 			const MenuItem *selectedMenuItem = &menuItems[*selectedMenuItemIndex];
 
 			// Handle picker interaction.
-
 			bool action = false;
 
 			if (mouseMoved || newmouse)
@@ -806,11 +822,10 @@ int main(int argc, char *argv[])
 	// Note for this reorganization:
 	// Tyrian 2000 requires help text to be loaded before the configuration,
 	// because the default high score names are stored in help text
-
 	JE_paramCheck(argc, argv);
 
 	if (!override_xmas) // arg handler may override
-		xmas = xmas_time();
+	{ xmas = xmas_time(); }
 
 	JE_loadHelpText();
 	/*debuginfo("Help text complete");*/
@@ -822,22 +837,31 @@ int main(int argc, char *argv[])
 	init_video();
 	init_keyboard();
 	init_joysticks();
+	
 	printf("assuming mouse detected\n"); // SDL can't tell us if there isn't one
 
-	if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
+	if (
+		xmas &&
+		(
+			!dir_file_exists(data_dir(), "tyrianc.shp") ||
+			!dir_file_exists(data_dir(), "voicesc.snd")
+		)
+	)
 	{
 		xmas = false;
-
 		fprintf(stderr, "warning: Christmas is missing.\n");
 	}
 
 	JE_loadPals();
 	JE_loadMainShapeTables(xmas ? "tyrianc.shp" : "tyrian.shp");
 
-	if (xmas && !override_xmas && !xmas_prompt())
+	if (
+		xmas &&
+		!override_xmas &&
+		!xmas_prompt()
+	)
 	{
 		xmas = false;
-
 		free_main_shape_tables();
 		JE_loadMainShapeTables("tyrian.shp");
 	}
@@ -857,13 +881,13 @@ int main(int argc, char *argv[])
 
 		loadSndFile(xmas);
 	}
+
 	else
-	{
-		printf("audio disabled\n");
-	}
+	{ printf("audio disabled\n"); }
+
 
 	if (record_demo)
-		printf("demo recording enabled (input limited to keyboard)\n");
+	{ printf("demo recording enabled (input limited to keyboard)\n"); }
 
 	JE_loadExtraShapes();  /*Editship*/
 
@@ -871,9 +895,7 @@ int main(int argc, char *argv[])
 	{
 #ifdef WITH_NETWORK
 		if (network_init())
-		{
-			network_tyrian_halt(3, false);
-		}
+		{ network_tyrian_halt(3, false); }
 #else
 		fprintf(stderr, "OpenTyrian was compiled without networking support.");
 		JE_tyrianHalt(5);
@@ -882,7 +904,7 @@ int main(int argc, char *argv[])
 
 #ifdef NDEBUG
 	if (!isNetworkGame)
-		intro_logos();
+	{ intro_logos(); }
 #endif
 
 	for (; ; )
@@ -917,6 +939,7 @@ int main(int argc, char *argv[])
 
 			loadDestruct = false;
 		}
+
 		else
 		{
 			JE_main();
