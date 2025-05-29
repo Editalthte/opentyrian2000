@@ -3,10 +3,101 @@
 #include <SDL2/SDL_surface.h>
 #include <cstddef>
 
+#include <map>
+#include <string>
+
+using std::string;
+using std::map;
+
 struct Sprite2_array
 {
 	size_t size;
 	Uint8 *data;
+};
+
+class Ship
+{
+	struct Armor
+	{
+		Uint8 max;
+		Uint8 current;
+	};
+
+	struct Shield
+	{
+		Uint8 max;
+		Uint8 current;
+	};
+
+	struct Spatial_Vector
+	{
+		struct Unit_Vector
+		{
+			string id; // "name" of the unit vector (eg: x, y, z)
+			Sint16 coordinate; // numerical positional data associated with the unit vector
+			Sint8 speed; // the total speed associated with the unit vector
+			Sint8 acceleration; // the amount of acceleration with the unit vector
+			Sint8 fixed_acceleration_wait_time;
+
+			// Default Constructor
+			Unit_Vector(const string INIT_ID, const Sint16 INIT_COORDINATE = 0, const Sint8 INIT_SPEED = 0, const Sint8 INIT_ACCELERATION = 0, const Sint8 INIT_FIXED_ACCELERATION_WAIT_TIME = 0)
+			{
+				this->id = INIT_ID;
+				this->coordinate = INIT_COORDINATE;
+				this->speed = INIT_SPEED;
+				this->acceleration = INIT_ACCELERATION;
+				this->fixed_acceleration_wait_time = INIT_FIXED_ACCELERATION_WAIT_TIME;
+			}
+
+			// Methods
+			void apply_acceleration()
+			{ this->speed += this->acceleration; }
+
+			void apply_speed()
+			{ this->coordinate += this->speed; }
+		};
+
+		map<string, Unit_Vector> vectors
+		{
+			{ "x", Unit_Vector("x") },
+			{ "y", Unit_Vector("y") }
+		};
+
+		// Default Constructor
+		Spatial_Vector()
+		{ }
+
+		// Methods
+		void apply_acceleration()
+		{
+			for (auto & [key, value]: this->vectors)
+			{ value.apply_acceleration(); }
+		}
+
+		void apply_speed()
+		{
+			for (auto & [key, value]: this->vectors)
+			{ value.apply_speed(); }
+		}
+	};
+
+
+
+	private:
+		
+		// Data Members
+		Armor armor;
+		Shield shield;
+
+		Spatial_Vector vector; // Contains position, speed, acceleration, etc.
+
+	public:
+
+		// Default Constructor
+		Ship()
+		{ }
+
+
 };
 
 struct JE_SingleEnemyType
