@@ -75,12 +75,12 @@ struct JE_SingleEnemyType
 	Sprite2_array *sprite2s;
 };
 
-class Level_Controller
+class Level_Engine
 {
 	public:
 		
 		// Default Constructor
-		Level_Controller()
+		Level_Engine()
 		{ }
 
 		inline static void blit_enemy(SDL_Surface *surface, unsigned int i, signed int x_offset, signed int y_offset, signed int sprite_offset)
