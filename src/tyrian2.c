@@ -103,6 +103,7 @@ void JE_starShowVGA(void)
 				src -= game_screen->pitch;
 			}
 		}
+
 		else if (starShowVGASpecialCode == 2 && processorType >= 2)
 		{
 			lighty = 172 - player[0].y;
@@ -119,6 +120,7 @@ void JE_starShowVGA(void)
 						src++;
 					}
 				}
+
 				else
 				{
 					for (x = 320 - 56; x; x--)

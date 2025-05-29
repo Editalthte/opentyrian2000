@@ -926,17 +926,14 @@ int main(int argc, char *argv[])
 		else
 #endif
 		{
+			// Player quit from title screen.
 			if (!titleScreen())
-			{
-				// Player quit from title screen.
-				break;
-			}
+			{ break; }
 		}
 
 		if (loadDestruct)
 		{
 			JE_destructGame();
-
 			loadDestruct = false;
 		}
 
