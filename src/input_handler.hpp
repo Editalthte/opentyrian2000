@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 
+using std::map;
 using std::string;
 
 const int SDL_POLL_INTERVAL = 10;
@@ -102,7 +103,7 @@ class Mouse
 			// break;
 		};
 
-		std::map<int, Button> buttons
+		map<int, Button> buttons
 		{
 			{0, Button(0)},
 			{1, Button(1)},
